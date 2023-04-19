@@ -1,0 +1,11 @@
+server:
+  port: 5000
+spring:
+  datasource:
+    hikari:
+      driver-class-name: oracle.jdbc.OracleDriver
+      jdbc-url: jdbc:oracle:thin:@//${DB_IP:localhost}:1521/XE
+      password: 123456
+      username: ${DB_USR:SEGUNI_2}
+  jpa:
+    show-sql: true
