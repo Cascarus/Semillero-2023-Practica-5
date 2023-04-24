@@ -1,0 +1,137 @@
+<div class="d-sm-flex align-items-center justify-content-between mb-2">
+    <h1 class="h3 mb-2 text-gray-800">Coberturas</h1>
+    <div class="colum">
+        <a>
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary shadow text-white shadow float-right m-2" data-toggle="modal"
+                data-target="#addNomencModal" (click)="addCliente()" data-backdrop="static" data-keyboard="false">
+                Crear Cobertura
+            </button>
+
+            <!-- Modal -->
+            <div class="modal fade" id="addNomencModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Nueva Poliza</h5>
+                            <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"
+                                (click)="closeClick1()"></button>
+                        </div>
+                        <div class="modal-body">
+                            <!--<app-add-poliza [poliza]='poliza' *ngIf="ActivateAddComp1"></app-add-poliza>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+</div>
+
+<div class="card shadow mb-4">
+    <div class="card-body">
+        <p-table #dt1 [value]="coberturas" [paginator]="false" [rows]="sizePage" [(first)]="firstIndex"
+            [rowsPerPageOptions]="[2, 5,10, 25, 50]"
+            [globalFilterFields]="['id','descripcion', 'costo', 'costo2', 'ciudad', 'codPostal']">
+
+            <ng-template pTemplate="caption">
+                <div class="card flex flex-wrap gap-3 justify-content-center">
+                    <button pButton label="Clear" class="p-button-outlined" icon="pi pi-filter-slash"
+                        (click)="clear(dt1)"></button>
+                </div>
+            </ng-template>
+            <ng-template pTemplate="header">
+                <tr>
+                    <th pSortableColumn="id">
+                        ID
+                        <p-sortIcon field="id"></p-sortIcon>
+                        <p-columnFilter type="text" field="id" display="menu"></p-columnFilter>
+                    </th>
+                    <th pSortableColumn="descripcion">
+                        Descripcion
+                        <p-sortIcon field="descripcion"></p-sortIcon>
+                        <p-columnFilter type="text" field="descripcion" display="menu"></p-columnFilter>
+                    </th>
+                    <th pSortableColumn="costo">
+                        Costo
+                        <p-sortIcon field="costo"></p-sortIcon>
+                        <p-columnFilter type="text" field="costo" display="menu"></p-columnFilter>
+                    </th>
+                    <th pSortableColumn="sumaAsegurada">
+                        Sum. Asegurada
+                        <p-sortIcon field="sumaAsegurada"></p-sortIcon>
+                        <p-columnFilter type="text" field="sumaAsegurada" display="menu"></p-columnFilter>
+                    </th>
+                    <th pSortableColumn="estado">
+                        Estado
+                        <p-sortIcon field="estado"></p-sortIcon>
+                        <p-columnFilter type="text" field="estado" display="menu"></p-columnFilter>
+                    </th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-coberturas let-editing="editing">
+
+                <tr>
+                    <td>{{ coberturas.id }}</td>
+                    <td [pEditableColumn]="coberturas.descripcion" pEditableColumnField="descripcion">
+                        <p-cellEditor>
+                            <ng-template pTemplate="input">
+                                <input pInputText type="text" [(ngModel)]="coberturas.descripcion" />
+                            </ng-template>
+                            <ng-template pTemplate="output">
+                                {{ coberturas.descripcion}}
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+                    <td [pEditableColumn]="coberturas.costo" pEditableColumnField="costo">
+                        <p-cellEditor>
+                            <ng-template pTemplate="input">
+                                <input pInputText type="text" [(ngModel)]="coberturas.costo" />
+                            </ng-template>
+                            <ng-template pTemplate="output">
+                                {{ coberturas.costo}}
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+                    <td [pEditableColumn]="coberturas.sumaAsegurada" pEditableColumnField="sumaAsegurada">
+                        <p-cellEditor>
+                            <ng-template pTemplate="input">
+                                <input pInputText type="text" [(ngModel)]="coberturas.sumaAsegurada" />
+                            </ng-template>
+                            <ng-template pTemplate="output">
+                                {{ coberturas.sumaAsegurada}}
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+                    <td>
+                        <ng-container *ngIf='coberturas.estado === "a"; else second'>
+                            <span>
+                                Activo
+                            </span>
+                        </ng-container>
+                        <ng-template #second>
+                            <span>
+                                Inactivo
+                            </span>
+                        </ng-template>
+                    </td>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="paginatorleft">
+                <p-button type="button" icon="pi pi-plus" styleClass="p-button-text"></p-button>
+            </ng-template>
+            <ng-template pTemplate="paginatorright">
+                <p-button type="button" icon="pi pi-cloud" styleClass="p-button-text"></p-button>
+            </ng-template>
+
+            <div class="card flex justify-content-center">
+
+            </div>
+
+        </p-table>
+        <p-paginator (onPageChange)=onPageChange($event) [rows]="sizePage" [totalRecords]="totalElements"
+            [rowsPerPageOptions]="[2 ,5, 10, 20, 30]">
+        </p-paginator>
+
+    </div>
+</div>
