@@ -20,4 +20,15 @@ export class CoberturasService {
 
     return this.http.get<any>(this.API_URL + '/coberturas/verTodos2',{params:queryParams})
   }
+
+  insertarCobertura(objeto:any){
+    let httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    }
+    return this.http.post<any>(this.API_URL +'/coberturas/crearCoberturas', objeto, httpOptions).pipe(
+      catchError(e=>"e")
+    );
+  }
 }

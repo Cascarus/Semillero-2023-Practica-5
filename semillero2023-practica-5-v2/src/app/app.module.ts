@@ -18,6 +18,9 @@ import { ButtonModule } from 'primeng/button';
 import { HttpClientModule } from '@angular/common/http';
 import { CoberturasComponent } from './components/coberturas/coberturas.component';
 import { AddCoberturaComponent } from './components/coberturas/add-cobertura/add-cobertura.component';
+import { InputTextModule } from 'primeng/inputtext';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { InputNumberModule } from 'primeng/inputnumber';
 
 @NgModule({
   declarations: [
@@ -39,7 +42,11 @@ import { AddCoberturaComponent } from './components/coberturas/add-cobertura/add
     PaginatorModule,
     ButtonModule,
     HttpClientModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    InputTextModule,
+    ReactiveFormsModule,
+    InputTextareaModule,
+    InputNumberModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
