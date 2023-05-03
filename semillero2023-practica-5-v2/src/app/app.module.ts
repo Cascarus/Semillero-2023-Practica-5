@@ -21,6 +21,8 @@ import { AddCoberturaComponent } from './components/coberturas/add-cobertura/add
 import { InputTextModule } from 'primeng/inputtext';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { InputNumberModule } from 'primeng/inputnumber';
+import { CardModule } from 'primeng/card';
+import { AddClienteComponent } from './components/clientes/add-cliente/add-cliente.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +31,8 @@ import { InputNumberModule } from 'primeng/inputnumber';
     ClientesComponent,
     HomeComponent,
     CoberturasComponent,
-    AddCoberturaComponent
+    AddCoberturaComponent,
+    AddClienteComponent
   ],
   imports: [
     BrowserModule,
@@ -47,6 +50,7 @@ import { InputNumberModule } from 'primeng/inputnumber';
     ReactiveFormsModule,
     InputTextareaModule,
     InputNumberModule,
+    CardModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

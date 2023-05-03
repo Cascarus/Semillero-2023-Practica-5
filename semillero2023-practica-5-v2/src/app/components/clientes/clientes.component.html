@@ -1,131 +1,63 @@
-<div class="d-sm-flex align-items-center justify-content-between mb-2">
-    <h1 class="h3 mb-2 text-gray-800">Clientes</h1>
-    <div class="colum">
-        <a>
-            <!-- Button trigger modal -->
-            <button type="button" class="btn btn-primary shadow text-white shadow float-right m-2" data-toggle="modal"
-                data-target="#addNomencModal" (click)="addCliente()" data-backdrop="static" data-keyboard="false">
-                Crear Poliza
-            </button>
-
-            <!-- Modal -->
-            <div class="modal fade" id="addNomencModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Nueva Poliza</h5>
-                            <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </a>
+<div class="container">
+    <h3>Clientes</h3>
+    <div class="justify-content-center">
+        <span class="p-input-icon-left">
+            <i *ngIf="!icon_cargar" class="pi pi-search"></i>
+            <i *ngIf="icon_cargar" class="pi pi-spin pi-spinner"></i>
+            <input type="text" pInputText (input)="evaluarValorInput($event)" (keyup.enter)="buscar()" size="100" />
+        </span>
+        &nbsp; &nbsp;
+        <p-button label="Buscar" styleClass="p-button-primary" (click)="buscar()" class="text-center"
+            [disabled]="disabled" icon="pi pi-search"></p-button>
     </div>
+    &nbsp; &nbsp;
 </div>
 
-<div class="card shadow mb-4">
-    <div class="card-body">
-        <p-table #dt1 [value]="clientes" [paginator]="false" [rows]="sizePage" [(first)]="firstIndex"
-            [rowsPerPageOptions]="[2, 5,10, 25, 50]"
-            [globalFilterFields]="['nombre', 'apellido', 'nit', 'dpi']">
-
-            <ng-template pTemplate="caption">
-                <div class="card flex flex-wrap gap-3 justify-content-center">
+<div class="md-4">
+    <div class="card mb-4" *ngIf="tabla">
+        <div class="card-body">
+            <p-table #dt1 [value]="clientes" [paginator]="false" [rows]="sizePage" [(first)]="firstIndex"
+                [rowsPerPageOptions]="[2, 5,10, 25, 50]">
+    
+                <ng-template pTemplate="caption">
                     <button pButton label="Clear" class="p-button-outlined" icon="pi pi-filter-slash"
                         (click)="clear(dt1)"></button>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th> ID </th>
+                        <th> Nombre </th>
+                        <th> Apellido </th>
+                        <th> Nit </th>
+                        <th> DPI </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-clientes let-editing="editing">
+    
+                    <tr>
+                        <td>{{ clientes.id }}</td>
+                        <td>{{ clientes.nombre}}</td>
+                        <td>{{ clientes.apellido}}</td>
+                        <td>{{ clientes.nit}}</td>
+                        <td>{{ clientes.dpi}}</td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="paginatorleft">
+                    <p-button type="button" icon="pi pi-plus" styleClass="p-button-text"></p-button>
+                </ng-template>
+                <ng-template pTemplate="paginatorright">
+                    <p-button type="button" icon="pi pi-cloud" styleClass="p-button-text"></p-button>
+                </ng-template>
+    
+                <div class="card flex justify-content-center">
+    
                 </div>
-            </ng-template>
-            <ng-template pTemplate="header">
-                <tr>
-                    <th pSortableColumn="id">
-                        ID
-                        <p-sortIcon field="id"></p-sortIcon>
-                        <p-columnFilter type="text" field="id" display="menu"></p-columnFilter>
-                    </th>
-                    <th pSortableColumn="nombre">
-                        Nombre
-                        <p-sortIcon field="nombre"></p-sortIcon>
-                        <p-columnFilter type="text" field="nombre" display="menu"></p-columnFilter>
-                    </th>
-                    <th pSortableColumn="apellido">
-                        Apellido
-                        <p-sortIcon field="apellido"></p-sortIcon>
-                        <p-columnFilter type="text" field="apellido" display="menu"></p-columnFilter>
-                    </th>
-                    <th pSortableColumn="nit">
-                        Nit
-                        <p-sortIcon field="nit"></p-sortIcon>
-                        <p-columnFilter type="text" field="nit" display="menu"></p-columnFilter>
-                    </th>
-                    <th pSortableColumn="dpi">
-                        DPI
-                        <p-sortIcon field="dpi"></p-sortIcon>
-                        <p-columnFilter type="text" field="dpi" display="menu"></p-columnFilter>
-                    </th>
-                </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-clientes let-editing="editing">
-
-                <tr>
-                    <td>{{ clientes.id }}</td>
-                    <td [pEditableColumn]="clientes.nombre" pEditableColumnField="nombre">
-                        <p-cellEditor>
-                            <ng-template pTemplate="input">
-                                <input pInputText type="text" [(ngModel)]="clientes.nombre" />
-                            </ng-template>
-                            <ng-template pTemplate="output">
-                                {{ clientes.nombre}}
-                            </ng-template>
-                        </p-cellEditor>
-                    </td>
-                    <td [pEditableColumn]="clientes.apellido" pEditableColumnField="apellido">
-                        <p-cellEditor>
-                            <ng-template pTemplate="input">
-                                <input pInputText type="text" [(ngModel)]="clientes.apellido" />
-                            </ng-template>
-                            <ng-template pTemplate="output">
-                                {{ clientes.apellido}}
-                            </ng-template>
-                        </p-cellEditor>
-                    </td>
-                    <td [pEditableColumn]="clientes.nit" pEditableColumnField="nit">
-                        <p-cellEditor>
-                            <ng-template pTemplate="input">
-                                <input pInputText type="text" [(ngModel)]="clientes.nit" />
-                            </ng-template>
-                            <ng-template pTemplate="output">
-                                {{ clientes.nit}}
-                            </ng-template>
-                        </p-cellEditor>
-                    </td>
-                    <td [pEditableColumn]="clientes.dpi" pEditableColumnField="dpi">
-                        <p-cellEditor>
-                            <ng-template pTemplate="input">
-                                <input pInputText type="text" [(ngModel)]="clientes.dpi" />
-                            </ng-template>
-                            <ng-template pTemplate="output">
-                                {{ clientes.dpi}}
-                            </ng-template>
-                        </p-cellEditor>
-                    </td>
-                </tr>
-            </ng-template>
-            <ng-template pTemplate="paginatorleft">
-                <p-button type="button" icon="pi pi-plus" styleClass="p-button-text"></p-button>
-            </ng-template>
-            <ng-template pTemplate="paginatorright">
-                <p-button type="button" icon="pi pi-cloud" styleClass="p-button-text"></p-button>
-            </ng-template>
-
-            <div class="card flex justify-content-center">
-
-            </div>
-
-        </p-table>
-        <p-paginator (onPageChange)=onPageChange($event) [rows]="sizePage" [totalRecords]="totalElements"
-            [rowsPerPageOptions]="[2 ,5, 10, 20, 30]">
-        </p-paginator>
-
+    
+            </p-table>
+            <p-paginator (onPageChange)=onPageChange($event) [rows]="sizePage" [totalRecords]="totalElements"
+                [rowsPerPageOptions]="[2 ,5, 10, 20, 30]">
+            </p-paginator>
+    
+        </div>
     </div>
 </div>

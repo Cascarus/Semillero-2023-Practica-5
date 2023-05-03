@@ -18,7 +18,7 @@ export class CoberturasService {
       .append("page", noPage)
       .append("size", size);
 
-    return this.http.get<any>(this.API_URL + '/coberturas/verTodos2',{params:queryParams})
+    return this.http.get<any>(this.API_URL + '/api/coberturas/verTodos2',{params:queryParams})
   }
 
   insertarCobertura(objeto:any){
@@ -27,7 +27,7 @@ export class CoberturasService {
         'Content-Type': 'application/json'
       })
     }
-    return this.http.post<any>(this.API_URL +'/coberturas/crearCoberturas', objeto, httpOptions).pipe(
+    return this.http.post<any>(this.API_URL +'/api/coberturas/crearCoberturas', objeto, httpOptions).pipe(
       catchError(e=>"e")
     );
   }

@@ -18,15 +18,16 @@ export class TopMenuComponent implements OnInit {
         routerLink: '/home'
       },
       {
-        label: 'Users',
+        label: 'Clientes',
         icon: 'pi pi-fw pi-user',
         items: [
           {
-            label: 'New',
-            icon: 'pi pi-fw pi-user-plus'
+            label: 'Agregar cliente',
+            icon: 'pi pi-fw pi-user-plus',
+            routerLink: '/clientes/new'
           },
           {
-            label: 'Search',
+            label: 'Buscar cliente',
             icon: 'pi pi-fw pi-users',
             routerLink: '/clientes'
           }
@@ -37,12 +38,61 @@ export class TopMenuComponent implements OnInit {
         icon: 'pi pi-fw pi-calendar',
         items: [
           {
-            label: 'New',
+            label: 'Agregar cobertura',
             icon: 'pi pi-fw pi-calendar-plus',
             routerLink: '/coberturas/new'
           },
           {
-            label: 'Search',
+            label: 'Buscar Cobertura',
+            icon: 'pi pi-fw pi-calendar',
+            routerLink: '/coberturas'
+          }
+        ]
+      },
+      {
+        label: 'Polizas',
+        icon: 'pi pi-fw pi-shield',
+        items: [
+          {
+            label: 'Emision poliza',
+            icon: 'fas fa-clock',
+            routerLink: '/coberturas/new'
+          },
+          {
+            label: 'Consultar poliza',
+            icon: 'pi pi-fw pi-calendar',
+            routerLink: '/coberturas'
+          },
+          {
+            label: 'Siniestros',
+            icon: 'pi pi-fw pi-calendar',
+            items:[
+              {
+                label: 'Agregar Siniestro',
+                icon: 'Consulta',
+                routerLink: '/coberturas/new'
+              },
+              {
+                label: 'Consulta Siniestro',
+                icon: 'pi pi-fw pi-calendar',
+                routerLink: '/coberturas'
+              },
+            ]
+
+          }
+        ]
+      },
+      {
+        label: 'Facturas',
+        icon: 'pi pi-fw pi-file-edit',
+        items: [
+          {
+            label: 'Agregar Factura',
+            icon: 'pi pi-fw pi-calendar-plus',
+            routerLink: '/coberturas/new'
+          },
+          {
+            label: 'Buscar Factura',
             icon: 'pi pi-fw pi-calendar',
             routerLink: '/coberturas'
           }

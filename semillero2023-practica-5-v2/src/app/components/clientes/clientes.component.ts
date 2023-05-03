@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ClientesService } from 'src/app/services/clientes.service';
 import { Table } from 'primeng/table';
+import { delay } from 'rxjs';
 
 @Component({
   selector: 'app-clientes',
@@ -9,15 +10,8 @@ import { Table } from 'primeng/table';
 })
 export class ClientesComponent implements OnInit {
 
-  PolizasList: any = [];
-
-  poliza: any;
-
-  ActivateAddComp1:boolean = false;
-  ActivateAddComp2:boolean = false;
-
-  PolizaFilter: string = "";
-  PolizaNoFilter: any = [];
+  disabled:boolean = true;
+  tabla:boolean = false;
 
   listaClientes:any;
   clientes:any;
@@ -27,6 +21,11 @@ export class ClientesComponent implements OnInit {
   totalElements:any;
   totalPages:any;
   tempPage = 0;
+
+  valBusqueda = "";
+  icon_cargar: boolean = false;
+
+
   
   constructor(private clientesServices:ClientesService){}
 
@@ -69,25 +68,49 @@ export class ClientesComponent implements OnInit {
     this.actualizarPagina(event.page, this.sizePage);
   }
 
-  actualizarPagina(page:number, size:number){
-    this.clientesServices.verTodosPaginado(page, size).subscribe(
+  clear(table: Table) {
+    table.clear();
+  }
+
+  evaluarValorInput(event:any){
+
+    if (event.target instanceof HTMLInputElement) {
+      this.valBusqueda = event.target.value;
+      if (this.valBusqueda?.trim() !== '') {
+        this.disabled = false;
+      } else {
+        this.disabled = true;
+      }
+    }
+  }
+
+  buscar(){
+    this.icon_cargar = true;
+
+    this.clientesServices.mantenimiento(this.valBusqueda, 0 , this.sizePage).subscribe(
       res=>{
         this.listaClientes = res;
-        console.log(res);
+        this.clientes = this.listaClientes.content;
+        this.totalElements = this.listaClientes.totalElements;
+        this.totalPages = this.listaClientes.totalPages;
+        delay(5000);
+      },
+      err => console.log(err)
+    );
+    this.icon_cargar = false;
+    this.tabla = true;
+  }
+
+  actualizarPagina(page:number, size:number){
+    this.clientesServices.mantenimiento(this.valBusqueda, page, size).subscribe(
+      res=>{
+        this.listaClientes = res;
         this.clientes = this.listaClientes.content;
         this.totalElements = this.listaClientes.totalElements;
         this.totalPages = this.listaClientes.totalPages;
       },
       err=> console.log(err)
     );
-
-  }
-
-  clear(table: Table) {
-    table.clear();
-  }
-
-  addCliente(){
 
   }
 }
