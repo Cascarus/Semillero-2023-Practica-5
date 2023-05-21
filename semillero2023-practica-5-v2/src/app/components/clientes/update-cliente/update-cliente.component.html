@@ -21,19 +21,19 @@
                         <label for="nit">NIT</label>
                         <br>
                         <input type="text" inputId="nit" pInputText [(ngModel)]="cliente.nit"
-                            [ngModelOptions]="{standalone: true}" maxlength="20" />
+                            [ngModelOptions]="{standalone: true}" maxlength="20" [disabled]="true" />
                     </div>
                     <div class="col">
                         <label for="dpi">DPI</label>
                         <br>
                         <input type="text" inputId="dpi" pInputText [(ngModel)]="cliente.dpi"
-                            [ngModelOptions]="{standalone: true}" maxlength="20" />
+                            [ngModelOptions]="{standalone: true}" maxlength="20" [disabled]="true" />
                     </div>
                 </div>
                 <div class="row justify-content-md-center">
                     <div class="col-md-2" align="center">
                         <br>
-                        <button type="button" class="btn btn-success" (click)="crearRegistro()">Crear</button>
+                        <button type="button" class="btn btn-success" (click)="guardarRegistro()">Guardar</button>
                     </div>
                     <div class="col-md-4" align="center">
                         <br>
@@ -88,7 +88,7 @@
                                 </svg>
                             </button>
                             &nbsp;
-                            <button type="button" class="btn btn-danger btn-sm shadow mr-3" data-toggle="modal"
+                            <button *ngIf="!direcciones.id" type="button" class="btn btn-danger btn-sm shadow mr-3" data-toggle="modal"
                                 data-target="#updateNomenModal" (click)="eliminarDireccion(direcciones)"
                                 data-backdrop="static" data-keyboard="false">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">

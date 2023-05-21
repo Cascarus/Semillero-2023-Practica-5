@@ -1,0 +1,380 @@
+<div class="container">
+    <h3>Seleccion de coberturas</h3>
+</div>
+<br>
+<div class="container">
+    <div class="row">
+        <div class="container">
+            <div class="justify-content-center">
+                &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+                &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+                <label for="Nombre">Coberturas</label>
+                &nbsp; &nbsp;
+
+                <p-autoComplete [suggestions]="filteredCoberturas" (completeMethod)="filterCobertura($event)"
+                    field="descripcion" (onSelect)="onSelectCobertura($event)" [(ngModel)]="txtCoberturas"
+                    [ngModelOptions]="{standalone: true}" [size]="75"></p-autoComplete>
+            </div>
+
+            <br>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <p-table #dt1 [value]="coberturas" [paginator]="false" [rows]="2"
+                [rowsPerPageOptions]="[2, 10, 25, 50, 100]" [tableStyle]="{'min-width': '60rem'}">
+
+                <ng-template pTemplate="caption">
+                    <button pButton label="Limpiar" class="p-button-outlined" icon="pi pi-trash"
+                        (click)="vaciarCoberturas()"></button>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="width:10%">
+                            ID
+                        </th>
+                        <th style="width:40%">
+                            Descripcion
+                        </th>
+                        <th style="width:20%">
+                            Costo
+                        </th>
+                        <th style="width:20%">
+                            Sum. Asegurada
+                        </th>
+                        <th style="width:10%">
+                            Acciones
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-coberturas>
+
+                    <tr>
+                        <td>{{ coberturas.id }}</td>
+                        <td>{{ coberturas.descripcion}}</td>
+                        <td>Q{{ coberturas.costo}}</td>
+                        <td>Q{{ coberturas.sumaAsegurada}}</td>
+                        <td>
+                            <button type="button" class="btn btn-danger btn-sm shadow mr-3" data-toggle="modal"
+                                data-target="#updateNomenModal" (click)="eliminarCobertura(coberturas)"
+                                data-backdrop="static" data-keyboard="false">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                    class="bi bi-trash" viewBox="0 0 16 16">
+                                    <path
+                                        d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z" />
+                                    <path
+                                        d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z" />
+                                </svg>
+                            </button>
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="paginatorleft">
+                    <p-button type="button" icon="pi pi-plus" styleClass="p-button-text"></p-button>
+                </ng-template>
+                <ng-template pTemplate="paginatorright">
+                    <p-button type="button" icon="pi pi-cloud" styleClass="p-button-text"></p-button>
+                </ng-template>
+            </p-table>
+            <br>
+        </div>
+    </div>
+</div>
+<p-divider></p-divider>
+<div class="container">
+    <div class="row">
+        <div class="col-10">
+            <h3>Certificados</h3>
+        </div>
+        <div class="col-2" *ngIf="displayBotonesCertificados">
+            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+            <p-button styleClass="p-button-raised" icon="pi pi-plus" data-bs-toggle="modal"
+                data-bs-target="#addCertificados"></p-button>
+            &nbsp;
+            <p-button styleClass="p-button-raised p-button-danger" icon="pi pi-trash"
+                (onClick)="vaciarCertificados()"></p-button>
+        </div>
+    </div>
+    <div class="row" *ngIf="displayCertificados">
+        <form (ngSubmit)="emitir()" id="formEmision">
+            <p-divider></p-divider>
+            <div class="container" *ngFor="let certificado of listaCertificados">
+                <div class="row justify-content-between">
+                    <div class="col-11">
+                        <h4> Certificado #{{certificado.numero}}</h4>
+                    </div>
+                    <div class="col">
+                        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                        <button type="button" class="btn-close" (click)="eliminarCertificado(certificado)"></button>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label for="Contratante">Contratante</label>
+                            <br>
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" [(ngModel)]="certificado.nombreContratante"
+                                    [ngModelOptions]="{standalone: true}" readonly required>
+                                <p-button styleClass="p-button-raised p-button-info" icon="pi pi-search"
+                                    data-bs-toggle="modal" data-bs-target="#addContratante"
+                                    (onClick)="limpiarContratante(certificado, 1)"></p-button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label for="Contratante">Asegurado</label>
+                            <br>
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" [(ngModel)]="certificado.nombreAsegurado"
+                                    [ngModelOptions]="{standalone: true}" [disabled]="true" required>
+                                <p-button styleClass="p-button-raised p-button-info" icon="pi pi-search"
+                                    data-bs-toggle="modal" data-bs-target="#addContratante" (onClick)="limpiarContratante(certificado ,2)"></p-button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="row justify-content-between">
+                    <div class="col-6">
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label for="FechaInicio">Fecha de Inicio</label>
+                                    <br>
+                                    <input type="date" class="form-control" [(ngModel)]="certificado.fechaInicio"
+                                        [ngModelOptions]="{standalone: true}" required>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label for="FechaFin">Fecha de Finalizacion</label>
+                                    <br>
+                                    <input type="date" class="form-control" [(ngModel)]="certificado.fechaFin"
+                                        [ngModelOptions]="{standalone: true}" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col col-lg-2">
+                        <div class="form-group">
+                            <label for="prima">Prima</label>
+                            <br>
+                            <h4>Q{{certificado.prima}}</h4>
+                        </div>
+                    </div>
+                    <div class="col col-lg-2">
+                        <div class="form-group">
+                            <label for="sumaAsegurada">Suma Asegurada</label>
+                            <br>
+                            <h4>Q{{certificado.sumaAsegurada}}</h4>
+                        </div>
+                    </div>
+
+                </div>
+                <p-divider></p-divider>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <h3>Datos de la Poliza</h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <label for="Contratante">Contratante (nit-nombre-dpi)</label>
+                    <br>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" [(ngModel)]="poliza.nombreContratanteP"
+                            [ngModelOptions]="{standalone: true}" [disabled]="true" required>
+                        <p-button styleClass="p-button-raised p-button-info" icon="pi pi-search"
+                            data-bs-toggle="modal" data-bs-target="#addContratante" (onClick)="limpiarContratante(null ,3)"></p-button>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="FechaInicio">Fecha de Inicio</label>
+                        <br>
+                        <input type="date" class="form-control" [(ngModel)]="poliza.fechaInicio"
+                            [ngModelOptions]="{standalone: true}" required>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="FechaFin">Fecha de Finalizacion</label>
+                        <br>
+                        <input type="date" class="form-control" [(ngModel)]="poliza.fechaFin"
+                            [ngModelOptions]="{standalone: true}" required>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="row justify-content-between">
+                <div class="col-6">
+
+                    <label for="tipoPoliza">Tipo de poliza</label>
+                    <br>
+                    <input type="text" class="form-control" [(ngModel)]="poliza.tipo"
+                        [ngModelOptions]="{standalone: true}" required [maxlength]="10">
+
+                </div>
+
+                <div class="col col-lg-2">
+                    <div class="form-group">
+                        <label for="prima">Prima</label>
+                        <br>
+                        <h4 style="color: #2ECC71">Q{{poliza.primaTotal}}</h4>
+                    </div>
+                </div>
+                <div class="col col-lg-2">
+                    <div class="form-group">
+                        <label for="sumaAsegurada">Suma Asegurada</label>
+                        <br>
+                        <h4 style="color: #2ECC71">Q{{poliza.sumaAsegurada}}</h4>
+                    </div>
+                </div>
+
+            </div>
+            <br>
+            <button type="submit" class="btn btn-primary">Save changes</button>
+        </form>
+    </div>
+</div>
+
+
+<!-- Modal Certificados-->
+<div class="modal fade" id="addCertificados" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Agregar Certificados</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col">
+                            <label for="Apellido">Cantidad de certificados</label>
+                            <br>
+                            <input type="number" class="form-control" [(ngModel)]="cantCertificados" min="0">
+                        </div>
+                    </div>
+                </div>
+                <p-divider></p-divider>
+                <h5>Plantilla certificados</h5>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col">
+                            <label for="Contratante">Contratante (nit-nombre-dpi)</label>
+                            <br>
+                            <p-autoComplete [suggestions]="filteredContratantes"
+                                (completeMethod)="filterContratante($event)" field="fullname"
+                                (onSelect)="onSelectContratante($event)" (onClear)="onClearContratante()" [size]="47"
+                                [delay]="1000" [showClear]="true"></p-autoComplete>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal"
+                    (click)="generateCertificados()">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Contratante-->
+<div class="modal fade" id="addContratante" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Buscar {{tituloModalContratnteV2}}</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row">
+
+
+                        <div class="input-group input-group-lg">
+                            <input type="text" class="form-control" (input)="evaluarValorInput($event)"
+                                (keyup.enter)="buscar()" [(ngModel)]="valBusqueda"
+                                [ngModelOptions]="{standalone: true}" />
+                            <button pButton label="Clear" icon="pi pi-trash" class="p-button-outlined"
+                                (click)="clear()"></button>
+
+                        </div>
+
+
+                    </div>
+                </div>
+                <p-divider></p-divider>
+                <div class="container-fluid">
+                    <div class="md-4">
+                        <div class="card mb-4" *ngIf="tabla">
+
+                            <p-table #dt1 [value]="clientes" [paginator]="false" [rows]="sizePage"
+                                [(first)]="firstIndex" [rowsPerPageOptions]="[2, 5,10, 25, 50]">
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th> Nit </th>
+                                        <th> Nombre </th>
+                                        <th> Apellido </th>
+                                        <th> DPI </th>
+                                        <th style="text-align:center"> Acciones </th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-clientes let-editing="editing">
+
+                                    <tr>
+                                        <td>{{ clientes.nit}}</td>
+                                        <td>{{ clientes.nombre}}</td>
+                                        <td>{{ clientes.apellido}}</td>
+                                        <td>{{ clientes.dpi}}</td>
+                                        <td style="text-align:center">
+                                            <button type="button" class="btn btn-primary btn-sm shadow mr-3"
+                                                (click)="onSelectContratanteV2(clientes, tempContratante, tipoSelectContratanteV2)"
+                                                data-backdrop="static" data-keyboard="false">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                    fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                                                    <path
+                                                        d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+                                                </svg>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="paginatorleft">
+                                    <p-button type="button" icon="pi pi-plus" styleClass="p-button-text"></p-button>
+                                </ng-template>
+                                <ng-template pTemplate="paginatorright">
+                                    <p-button type="button" icon="pi pi-cloud" styleClass="p-button-text"></p-button>
+                                </ng-template>
+
+                                <div class="card flex justify-content-center">
+
+                                </div>
+
+                            </p-table>
+                            <p-paginator (onPageChange)=onPageChange($event) [rows]="sizePage"
+                                [totalRecords]="totalElements" [rowsPerPageOptions]="[2 ,5, 10, 20, 30]">
+                            </p-paginator>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal"
+                    (click)="generateCertificados()">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+

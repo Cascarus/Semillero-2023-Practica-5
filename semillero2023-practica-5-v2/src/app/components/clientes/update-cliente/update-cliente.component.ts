@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { ClientesService } from 'src/app/services/clientes.service';
 
 @Component({
-  selector: 'app-add-cliente',
-  templateUrl: './add-cliente.component.html',
-  styleUrls: ['./add-cliente.component.css']
+  selector: 'app-update-cliente',
+  templateUrl: './update-cliente.component.html',
+  styleUrls: ['./update-cliente.component.css']
 })
-export class AddClienteComponent implements OnInit{
-
+export class UpdateClienteComponent {
+  
   cliente:any;
   direcciones:any = [];
 
@@ -21,17 +22,13 @@ export class AddClienteComponent implements OnInit{
     {id: "a", tipo:"Activo"},
   ];
 
-  constructor(private clientesServices:ClientesService){}
+  constructor(private clientesServices:ClientesService, private active:ActivatedRoute){}
 
   ngOnInit(): void {
-    this.cliente = {
-      nombre: "",
-      apellido: "",
-      nit: "",
-      dpi:"",
-      estado:"a",
-      grabacionUsuario:this.getUsr()
-    }
+    const param = this.active.snapshot.params;
+    var id:number = param['id'];
+    this.getCliente(id);
+    
 
     this.tempDireccion = {
       direccion: "",
@@ -40,14 +37,24 @@ export class AddClienteComponent implements OnInit{
     };
   }
 
+  getCliente(id:number){
+    this.clientesServices.verById(id).subscribe(
+      res=>{
+        this.cliente = res;
+        this.direcciones = res.direccionesList;
+      },
+      err=> console.log(err)
+    );
+  }
+
   getUsr(){
     return "quemado";
   }
 
-  crearRegistro(){
+  guardarRegistro(){
     this.cliente.direccionesList = this.direcciones;
-    console.log(this.cliente);
-    this.clientesServices.agregarClientes(this.cliente).subscribe(
+    this.cliente.modificacionUsuario = this.getUsr();
+    this.clientesServices.modificarClientes(this.cliente).subscribe(
       err=> console.log(err)
     );
     alert("el usuario se ha creado exitosamente");
@@ -75,10 +82,12 @@ export class AddClienteComponent implements OnInit{
   editarDireccion(item:any){
     this.tempDireccion = item;
 
+    this.oldDireccion.clienteId = item.clienteId;
     this.oldDireccion.direccion = item.direccion;
     this.oldDireccion.estado = item.estado;
     this.oldDireccion.grabacionFecha = item.grabacionFecha;
     this.oldDireccion.grabacionUsuario = item.grabacionUsuario;
+    this.oldDireccion.id = item.id;
     this.oldDireccion.modificacionFecha = item.modificacionFecha;
     this.oldDireccion.modificacionUsuario = item.modificacionUsuario;
   }
@@ -89,11 +98,13 @@ export class AddClienteComponent implements OnInit{
 
   cancelarCambioDireccion(){
     this.direcciones.forEach(element => {
-      if(element.direccion == this.tempDireccion.direccion){
+      if(element.direccion == this.tempDireccion.direccion || element.id == this.tempDireccion.id){
+        element.clienteId = this.oldDireccion.clienteId;
         element.direccion = this.oldDireccion.direccion;
         element.estado = this.oldDireccion.estado;
         element.grabacionFecha = this.oldDireccion.grabacionFecha;
         element.grabacionUsuario = this.oldDireccion.grabacionUsuario;
+        element.id = this.oldDireccion.id;
         element.modificacionFecha = this.oldDireccion.modificacionFecha;
         element.modificacionUsuario = this.oldDireccion.modificacionUsuario;
       }
@@ -101,5 +112,4 @@ export class AddClienteComponent implements OnInit{
 
     this.limpiarTempDireccion();
   }
-
 }

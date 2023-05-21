@@ -1,31 +1,17 @@
-<div class="d-sm-flex align-items-center justify-content-between mb-2">
-    <h1 class="h3 mb-2 text-gray-800">Coberturas</h1>
-    <div class="colum">
-        <a>
-            <!-- Button trigger modal -->
-            <button type="button" class="btn btn-primary shadow text-white shadow float-right m-2" data-toggle="modal"
-                data-target="#addNomencModal" (click)="addCliente()" data-backdrop="static" data-keyboard="false">
-                Crear Cobertura
-            </button>
-
-            <!-- Modal -->
-            <div class="modal fade" id="addNomencModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Nueva Poliza</h5>
-                            <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"
-                                (click)="closeClick1()"></button>
-                        </div>
-                        <div class="modal-body">
-                            <!--<app-add-poliza [poliza]='poliza' *ngIf="ActivateAddComp1"></app-add-poliza>-->
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </a>
+<div class="container">
+    <h3>Coberturas</h3>
+    <div class="justify-content-center">
+        <span class="p-input-icon-left">
+            <i *ngIf="!icon_cargar" class="pi pi-search"></i>
+            <i *ngIf="icon_cargar" class="pi pi-spin pi-spinner"></i>
+            <input type="text" pInputText (input)="evaluarValorInput($event)" (keyup.enter)="buscar()" size="100" [(ngModel)]="valBusqueda"
+            [ngModelOptions]="{standalone: true}"/>
+        </span>
+        &nbsp; &nbsp;
+        <p-button label="Buscar" styleClass="p-button-primary" (click)="buscar()" class="text-center"
+            [disabled]="disabled" icon="pi pi-search"></p-button>
     </div>
+    &nbsp; &nbsp;
 </div>
 
 <div class="card shadow mb-4">
@@ -35,7 +21,7 @@
 
             <ng-template pTemplate="caption">
                 <button pButton label="Clear" class="p-button-outlined" icon="pi pi-filter-slash"
-                    (click)="clear(dt1)"></button>
+                    (click)="clear()"></button>
             </ng-template>
             <ng-template pTemplate="header">
                 <tr>
@@ -53,6 +39,9 @@
                     </th>
                     <th>
                         Estado
+                    </th>
+                    <th>
+                        Acciones
                     </th>
                 </tr>
             </ng-template>
@@ -74,6 +63,18 @@
                                 Inactivo
                             </span>
                         </ng-template>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-warning btn-sm shadow mr-3" (click)="editarCoberturas(coberturas)"
+                            data-backdrop="static" data-keyboard="false">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                <path
+                                    d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+                                <path fill-rule="evenodd"
+                                    d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
+                            </svg>
+                        </button>
                     </td>
                 </tr>
             </ng-template>

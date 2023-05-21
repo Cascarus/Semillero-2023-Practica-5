@@ -56,12 +56,12 @@ export class TopMenuComponent implements OnInit {
           {
             label: 'Emision poliza',
             icon: 'fas fa-clock',
-            routerLink: '/coberturas/new'
+            routerLink: '/polizas/new'
           },
           {
             label: 'Consultar poliza',
             icon: 'pi pi-fw pi-calendar',
-            routerLink: '/coberturas'
+            routerLink: '/polizas'
           },
           {
             label: 'Siniestros',

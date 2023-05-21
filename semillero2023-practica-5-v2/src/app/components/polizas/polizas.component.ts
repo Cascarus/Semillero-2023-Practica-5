@@ -1,21 +1,21 @@
 import { Component, OnInit } from '@angular/core';
-import { ClientesService } from 'src/app/services/clientes.service';
 import { Table } from 'primeng/table';
 import { delay } from 'rxjs';
 import { Router } from '@angular/router';
+import { SegurosService } from 'src/app/services/seguros.service';
 
 @Component({
-  selector: 'app-clientes',
-  templateUrl: './clientes.component.html',
-  styleUrls: ['./clientes.component.css']
+  selector: 'app-polizas',
+  templateUrl: './polizas.component.html',
+  styleUrls: ['./polizas.component.css']
 })
-export class ClientesComponent implements OnInit {
+export class PolizasComponent implements OnInit{
 
   disabled:boolean = true;
   tabla:boolean = false;
 
-  listaClientes:any;
-  clientes:any;
+  listaPolizas:any;
+  polizas:any;
   rowsPerPageOptions:any
   firstIndex = 0;
   sizePage = 10;
@@ -26,11 +26,13 @@ export class ClientesComponent implements OnInit {
   valBusqueda = "";
   icon_cargar: boolean = false;
 
-
-  
-  constructor(private clientesServices:ClientesService, private router: Router){}
+  constructor(
+    private segurosServices:SegurosService,
+    private router:Router
+  ){}
 
   ngOnInit(){
+    this.actualizarPagina(this.tempPage, this.sizePage);
   }
 
   rowsChange(event:any){
@@ -87,13 +89,12 @@ export class ClientesComponent implements OnInit {
   buscar(){
     this.icon_cargar = true;
 
-    this.clientesServices.mantenimiento(this.valBusqueda, 0 , this.sizePage).subscribe(
+    this.segurosServices.mantenimiento(this.valBusqueda, 0 , this.sizePage).subscribe(
       res=>{
-        this.listaClientes = res;
-        this.clientes = this.listaClientes.content;
-        this.totalElements = this.listaClientes.totalElements;
-        this.totalPages = this.listaClientes.totalPages;
-        delay(5000);
+        this.listaPolizas = res;
+        this.polizas = this.listaPolizas.content;
+        this.totalElements = this.listaPolizas.totalElements;
+        this.totalPages = this.listaPolizas.totalPages;
       },
       err => console.log(err)
     );
@@ -102,12 +103,12 @@ export class ClientesComponent implements OnInit {
   }
 
   actualizarPagina(page:number, size:number){
-    this.clientesServices.mantenimiento(this.valBusqueda, page, size).subscribe(
+    this.segurosServices.verTodosPaginado(page, size).subscribe(
       res=>{
-        this.listaClientes = res;
-        this.clientes = this.listaClientes.content;
-        this.totalElements = this.listaClientes.totalElements;
-        this.totalPages = this.listaClientes.totalPages;
+        this.listaPolizas = res;
+        this.polizas = this.listaPolizas.content;
+        this.totalElements = this.listaPolizas.totalElements;
+        this.totalPages = this.listaPolizas.totalPages;
       },
       err=> console.log(err)
     );
@@ -116,4 +117,5 @@ export class ClientesComponent implements OnInit {
   editarClientes(item:any){
     this.router.navigate(['clientes/update/'+ item.id]);
   }
+
 }

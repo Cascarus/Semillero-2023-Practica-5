@@ -1,5 +1,5 @@
 <div class="container">
-    <h3>Clientes</h3>
+    <h3>Polizas</h3>
     <div class="justify-content-center">
         <span class="p-input-icon-left">
             <i *ngIf="!icon_cargar" class="pi pi-search"></i>
@@ -15,9 +15,9 @@
 </div>
 
 <div class="md-4">
-    <div class="card mb-4" *ngIf="tabla">
+    <div class="card mb-4">
         <div class="card-body">
-            <p-table #dt1 [value]="clientes" [paginator]="false" [rows]="sizePage" [(first)]="firstIndex"
+            <p-table #dt1 [value]="polizas" [paginator]="false" [rows]="sizePage" [(first)]="firstIndex"
                 [rowsPerPageOptions]="[2, 5,10, 25, 50]">
     
                 <ng-template pTemplate="caption">
@@ -27,23 +27,40 @@
                 <ng-template pTemplate="header">
                     <tr>
                         <th> ID </th>
-                        <th> Nombre </th>
-                        <th> Apellido </th>
-                        <th> Nit </th>
-                        <th> DPI </th>
+                        <th> Tipo </th>
+                        <th> Fecha Inicio </th>
+                        <th> Fecha Fin </th>
+                        <th> ID Contratante </th>
+                        <th> Prima Total </th>
+                        <th> Suma Asegurada </th>
+                        <th> Estado </th>
                         <th> Acciones </th>
                     </tr>
                 </ng-template>
-                <ng-template pTemplate="body" let-clientes let-editing="editing">
+                <ng-template pTemplate="body" let-polizas>
     
                     <tr>
-                        <td>{{ clientes.id }}</td>
-                        <td>{{ clientes.nombre}}</td>
-                        <td>{{ clientes.apellido}}</td>
-                        <td>{{ clientes.nit}}</td>
-                        <td>{{ clientes.dpi}}</td>
+                        <td>{{ polizas.id }}</td>
+                        <td>{{ polizas.tipo}}</td>
+                        <td>{{ polizas.fechaInicio}}</td>
+                        <td>{{ polizas.fechaFin}}</td>
+                        <td>{{ polizas.codigoContratante}}</td>
+                        <td>Q{{ polizas.primaTotal}}</td>
+                        <td>Q{{ polizas.sumaAsegurada}}</td>
                         <td>
-                            <button type="button" class="btn btn-warning btn-sm shadow mr-3" (click)="editarClientes(clientes)"
+                            <ng-container *ngIf='polizas.estado === "a"; else second'>
+                                <span>
+                                    Activo
+                                </span>
+                            </ng-container>
+                            <ng-template #second>
+                                <span>
+                                    Inactivo
+                                </span>
+                            </ng-template>
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-warning btn-sm shadow mr-3" (click)="editarClientes(polizas)"
                                 data-backdrop="static" data-keyboard="false">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                     class="bi bi-pencil-square" viewBox="0 0 16 16">

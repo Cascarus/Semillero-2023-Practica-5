@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CoberturasService } from 'src/app/services/coberturas.service';
 import { Table } from 'primeng/table';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -10,15 +11,8 @@ import { Table } from 'primeng/table';
 })
 export class CoberturasComponent implements OnInit{
 
-  PolizasList: any = [];
-
-  poliza: any;
-
-  ActivateAddComp1:boolean = false;
-  ActivateAddComp2:boolean = false;
-
-  PolizaFilter: string = "";
-  PolizaNoFilter: any = [];
+  disabled:boolean = true;
+  tabla:boolean = false;
 
   listaCoberturas:any;
   coberturas:any;
@@ -28,8 +22,14 @@ export class CoberturasComponent implements OnInit{
   totalElements:any;
   totalPages:any;
   tempPage = 0;
+
+  icon_cargar: boolean = false;
+  valBusqueda = "";
   
-  constructor(private coberturasServices:CoberturasService){}
+  constructor(
+    private coberturasServices:CoberturasService,
+    private router: Router
+    ){}
 
   ngOnInit(){
     this.actualizarPagina(this.tempPage, this.sizePage);
@@ -84,29 +84,40 @@ export class CoberturasComponent implements OnInit{
 
   }
 
-  clear(table: Table) {
-    table.clear();
+  clear() {
+    this.valBusqueda = "";
   }
 
-  addCliente(){
+  evaluarValorInput(event:any){
 
+    if (event.target instanceof HTMLInputElement) {
+      this.valBusqueda = event.target.value;
+      if (this.valBusqueda?.trim() !== '') {
+        this.disabled = false;
+      } else {
+        this.disabled = true;
+      }
+    }
   }
 
-  closeClick1(){
-    //this.ActivateAddComp1 = false;
-    //this.getPoliza(); 
+  buscar(){
+    this.icon_cargar = true;
+
+    this.coberturasServices.mantenimiento(this.valBusqueda, 0 , this.sizePage).subscribe(
+      res=>{
+        this.listaCoberturas = res;
+        this.coberturas = this.listaCoberturas.content;
+        this.totalElements = this.listaCoberturas.totalElements;
+        this.totalPages = this.listaCoberturas.totalPages;
+      },
+      err => console.log(err)
+    );
+    this.icon_cargar = false;
+    this.tabla = true;
   }
 
-  FilterPoliza(){
-    var PoliFilter = this.PolizaFilter;
-
-    /*this.PolizasList = this.PolizaNoFilter.filter(function(e:any){
-      return e.idPoliza.toString().toLowerCase().includes(
-        PoliFilter.toString().trim().toLowerCase()
-      )|| e.Descripcion.toString().toLowerCase().includes(
-        PoliFilter.toString().trim().toLowerCase()
-      )
-    });*/
+  editarCoberturas(item:any){
+    this.router.navigate(['coberturas/update/'+ item.id]);
   }
 
 }

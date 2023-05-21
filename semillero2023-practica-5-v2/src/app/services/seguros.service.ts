@@ -6,16 +6,11 @@ import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class CoberturasService {
+export class SegurosService {
 
   private API_URL = environment.apiURL;
 
   constructor(private http: HttpClient) { }
-
-  verTodos() {
-
-    return this.http.get<any>('/api/coberturas/verTodos')
-  }
 
   verTodosPaginado(noPage: number, size: number) {
     let queryParams = new HttpParams();
@@ -23,16 +18,16 @@ export class CoberturasService {
       .append("page", noPage)
       .append("size", size);
 
-    return this.http.get<any>('/api/coberturas/verTodos2',{params:queryParams})
+    return this.http.get<any>('/api/seguros/verTodos2',{params:queryParams})
   }
 
-  insertarCobertura(objeto:any){
+  crearPoliza(objeto:any){
     let httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
       })
     }
-    return this.http.post<any>('/api/coberturas/crearCoberturas', objeto, httpOptions).pipe(
+    return this.http.post<any>('/api/seguros/crearSeguros', objeto, httpOptions).pipe(
       catchError(e=>"e")
     );
   }
